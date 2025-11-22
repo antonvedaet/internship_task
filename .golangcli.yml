@@ -1,0 +1,24 @@
+version: "2"
+
+
+linters:
+  disable-all: true
+  disable:
+    - errcheck
+  enable:
+    - govet
+    - staticcheck
+    - ineffassign
+
+formatters:
+  disable-all: true
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - antonvedaet/internship_task
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

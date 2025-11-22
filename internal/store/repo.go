@@ -1,8 +1,9 @@
 package store
 
 import (
-	"antonvedaet/internship_task/internal/models"
 	"fmt"
+
+	"antonvedaet/internship_task/internal/models"
 
 	"github.com/lib/pq"
 )
