@@ -12,7 +12,7 @@ import (
 func main() {
 
 	mux := routes.MakeMux()
-
+	log.Println("asdasdqasdaasd")
 	log.Println("Server starting on :8080")
 	log.Fatal(http.ListenAndServe(":8080", mux))
 }

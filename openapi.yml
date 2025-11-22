@@ -431,5 +431,5 @@ paths:
                 type: object
                 required: [ status ]
                 properties:
-                  user_id:
+                  status:
                     type: boolean

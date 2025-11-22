@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"antonvedaet/internship_task/internal/http/handlers"
+	"antonvedaet/internship_task/internal/service"
 	"antonvedaet/internship_task/internal/store"
 )
 
@@ -16,8 +17,18 @@ func MakeMux() *http.ServeMux {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	handler := handlers.NewHandlers(db)
+	teamService := service.NewTeamService(db)
+	userService := service.NewUserService(db)
+	prService := service.NewPRService(db)
 
+	handler := handlers.NewHandlers(
+		teamService,
+		userService,
+		prService,
+	)
+	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello World"))
+	})
 	mux.HandleFunc("POST /team/add", handler.AddTeam)
 	mux.HandleFunc("GET /team/get", handler.GetTeam)
 
