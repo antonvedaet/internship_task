@@ -1,9 +1,27 @@
 package store
 
 import (
+	"database/sql"
 	"fmt"
 	"os"
+
+	_ "github.com/lib/pq"
 )
+
+type DB struct {
+	*sql.DB
+}
+
+func New() (*DB, error) {
+	db, err := sql.Open("postgres", getConnString())
+	if err != nil {
+		return nil, err
+	}
+	if err := db.Ping(); err != nil {
+		return nil, err
+	}
+	return &DB{db}, nil
+}
 
 func getEnv(key string) (string, error) {
 	if value := os.Getenv(key); value != "" {
@@ -12,7 +30,7 @@ func getEnv(key string) (string, error) {
 	return "", fmt.Errorf("key %s not found", key)
 }
 
-func GetConnString() string {
+func getConnString() string {
 	host, _ := getEnv("DB_HOST")
 	port, _ := getEnv("DB_PORT")
 	user, _ := getEnv("DB_USER")

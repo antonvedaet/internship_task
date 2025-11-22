@@ -419,3 +419,17 @@ paths:
                     pull_request_name: Add search
                     author_id: u1
                     status: OPEN
+  /health:
+    get:
+      tags: [Health]
+      responses:
+        '200':
+          description: Возвращает статус сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ status ]
+                properties:
+                  user_id:
+                    type: boolean
