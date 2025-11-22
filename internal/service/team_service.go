@@ -20,3 +20,7 @@ func (s *teamService) CreateTeam(team *models.Team) error {
 func (s *teamService) GetTeam(teamName string) (*models.Team, error) {
 	return s.db.GetTeam(teamName)
 }
+
+func (s *teamService) DeactivateTeamUsers(teamName string) (int, error) {
+	return s.db.DeactivateTeamUsers(teamName)
+}

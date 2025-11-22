@@ -5,6 +5,7 @@ import "antonvedaet/internship_task/internal/models"
 type TeamService interface {
 	CreateTeam(team *models.Team) error
 	GetTeam(teamName string) (*models.Team, error)
+	DeactivateTeamUsers(teamName string) (int, error)
 }
 
 type UserService interface {

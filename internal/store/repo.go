@@ -66,6 +66,21 @@ func (db *DB) GetTeam(teamName string) (*models.Team, error) {
 	return &team, nil
 }
 
+func (db *DB) DeactivateTeamUsers(teamName string) (int, error) {
+	result, err := db.Exec(`
+        UPDATE users 
+        SET is_active = false 
+        WHERE team_name = $1 AND is_active = true
+    `, teamName)
+
+	if err != nil {
+		return 0, err
+	}
+
+	count, _ := result.RowsAffected()
+	return int(count), nil
+}
+
 // User
 func (db *DB) GetUser(userID string) (*models.User, error) {
 	var user models.User

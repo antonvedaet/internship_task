@@ -26,6 +26,15 @@ content-type: application/json
   ]
 }
 
+### Деактивировать команду
+POST http://localhost:8080/team/deactivate
+content-type: application/json
+
+{
+    "team_name": "team1"
+}
+
+
 ### Установить флаг активности юзеру
 POST http://localhost:8080/users/setIsActive
 content-type: application/json

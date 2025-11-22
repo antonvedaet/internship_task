@@ -83,6 +83,39 @@ func (h *Handlers) GetTeam(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(team)
 }
 
+func (h *Handlers) DeactivateTeamUsers(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		h.sendError(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var req models.DeactivateTeamRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.sendError(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	if req.TeamName == "" {
+		h.sendErrorResponse(w, "INVALID_REQUEST", "team_name is required", http.StatusBadRequest)
+		return
+	}
+
+	deactivatedCount, err := h.teamService.DeactivateTeamUsers(req.TeamName)
+	if err != nil {
+		log.Printf("Error deactivating team users: %v", err)
+		h.sendError(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	response := models.DeactivateTeamResponse{
+		Message:          "Users deactivated successfully",
+		DeactivatedCount: deactivatedCount,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
 func (h *Handlers) SetUserActive(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		h.sendError(w, "Method not allowed", http.StatusMethodNotAllowed)

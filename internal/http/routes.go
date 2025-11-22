@@ -31,6 +31,7 @@ func MakeMux() *http.ServeMux {
 	})
 	mux.HandleFunc("POST /team/add", handler.AddTeam)
 	mux.HandleFunc("GET /team/get", handler.GetTeam)
+	mux.HandleFunc("POST /team/deactivate", handler.DeactivateTeamUsers)
 
 	mux.HandleFunc("POST /users/setIsActive", handler.SetUserActive)
 	mux.HandleFunc("GET /users/getReview", handler.GetUserReview)

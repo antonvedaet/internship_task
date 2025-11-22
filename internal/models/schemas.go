@@ -52,3 +52,12 @@ type UserReviewResponse struct {
 type TeamResponse struct {
 	Team *Team `json:"team"`
 }
+
+type DeactivateTeamRequest struct {
+	TeamName string `json:"team_name"`
+}
+
+type DeactivateTeamResponse struct {
+	Message          string `json:"message"`
+	DeactivatedCount int    `json:"deactivated_count"`
+}
