@@ -45,16 +45,16 @@ content-type: application/json
 }
 
 ### Получить назначенные пользователю PRы для ревью
-GET http://localhost:8080/users/getReview?user_id=u3
+GET http://localhost:8080/users/getReview?user_id=u2
 
 ### Создать PR и назначить ревьеров
 POST http://localhost:8080/pullRequest/create
 content-type: application/json
 
 {
-  "pull_request_id": "pr-1003",
+  "pull_request_id": "pr-1004",
   "pull_request_name": "Add more bugs",
-  "author_id": "u1"
+  "author_id": "u3"
 }
 
 ### Закрыть PR (идемпотентная операция)
@@ -73,3 +73,7 @@ content-type: application/json
   "pull_request_id": "pr-1003",
   "old_reviewer_id": "u3"
 }
+
+
+### healthcheck
+GET http://localhost:8080/health 

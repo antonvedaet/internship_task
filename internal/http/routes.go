@@ -26,9 +26,7 @@ func MakeMux() *http.ServeMux {
 		userService,
 		prService,
 	)
-	mux.HandleFunc("GET /", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello World"))
-	})
+
 	mux.HandleFunc("POST /team/add", handler.AddTeam)
 	mux.HandleFunc("GET /team/get", handler.GetTeam)
 	mux.HandleFunc("POST /team/deactivate", handler.DeactivateTeamUsers)

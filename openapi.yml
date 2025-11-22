@@ -120,6 +120,20 @@ components:
         status:
           type: string
           enum: [OPEN, MERGED]
+    DeactivateTeamRequest:
+      type: object
+      required: [team_name]
+      properties:
+        team_name:
+          type: string
+    DeactivateTeamResponse:
+      type: object
+      required: [message, deactivated_count]
+      properties:
+        message:
+          type: string
+        deactivated_count:
+          type: integer
 
 paths:
   /team/add:
@@ -198,6 +212,48 @@ paths:
           content:
             application/json:
               schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /team/deactivate:
+    post:
+      tags: [Teams]
+      summary: Массовая деактивация пользователей команды
+      description: Деактивирует всех пользователей указанной команды без переназначения открытых PR
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeactivateTeamRequest'
+            example:
+              team_name: backend
+      responses:
+        '200':
+          description: Пользователи команды деактивированы
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeactivateTeamResponse'
+              example:
+                message: Users deactivated successfully
+                deactivated_count: 5
+        '400':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+              example:
+                error:
+                  code: INVALID_REQUEST
+                  message: team_name is required
+        '404':
+          description: Команда не найдена
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+              example:
+                error:
+                  code: NOT_FOUND
+                  message: team not found
 
   /users/setIsActive:
     post:
