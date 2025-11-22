@@ -3,6 +3,8 @@ package store
 import (
 	"antonvedaet/internship_task/internal/models"
 	"fmt"
+
+	"github.com/lib/pq"
 )
 
 func (db *DB) CreateTeam(team *models.Team) error {
@@ -123,7 +125,7 @@ func (db *DB) CreatePR(pr *models.PullRequest) error {
         INSERT INTO pull_requests 
         (pull_request_id, pull_request_name, author_id, status, assigned_reviewers, created_at) 
         VALUES ($1, $2, $3, $4, $5, $6)
-    `, pr.PullRequestID, pr.PullRequestName, pr.AuthorID, pr.Status, pr.AssignedReviewers, pr.CreatedAt)
+    `, pr.PullRequestID, pr.PullRequestName, pr.AuthorID, pr.Status, pq.Array(pr.AssignedReviewers), pr.CreatedAt)
 	return err
 }
 
@@ -135,7 +137,7 @@ func (db *DB) GetPR(prID string) (*models.PullRequest, error) {
         WHERE pull_request_id = $1
     `, prID).Scan(
 		&pr.PullRequestID, &pr.PullRequestName, &pr.AuthorID, &pr.Status,
-		&pr.AssignedReviewers, &pr.CreatedAt, &pr.MergedAt,
+		pq.Array(&pr.AssignedReviewers), &pr.CreatedAt, &pr.MergedAt,
 	)
 	if err != nil {
 		return nil, err
@@ -148,7 +150,7 @@ func (db *DB) UpdatePR(pr *models.PullRequest) error {
         UPDATE pull_requests 
         SET status = $1, assigned_reviewers = $2, merged_at = $3 
         WHERE pull_request_id = $4
-    `, pr.Status, pr.AssignedReviewers, pr.MergedAt, pr.PullRequestID)
+    `, pr.Status, pq.Array(pr.AssignedReviewers), pr.MergedAt, pr.PullRequestID)
 	return err
 }
 
@@ -168,7 +170,7 @@ func (db *DB) GetPRsByReviewer(userID string) ([]models.PullRequest, error) {
 		var pr models.PullRequest
 		if err := rows.Scan(
 			&pr.PullRequestID, &pr.PullRequestName, &pr.AuthorID, &pr.Status,
-			&pr.AssignedReviewers, &pr.CreatedAt, &pr.MergedAt,
+			pq.Array(&pr.AssignedReviewers), &pr.CreatedAt, &pr.MergedAt,
 		); err != nil {
 			return nil, err
 		}

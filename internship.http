@@ -1,0 +1,66 @@
+### Получить данные о команде
+GET http://localhost:8080/team/get?team_name=newteam
+
+### Создать команду
+POST http://localhost:8080/team/add
+content-type: application/json
+
+{
+  "team_name": "newteam",
+  "members": [
+    {
+      "user_id": "u1",
+      "username": "a",
+      "is_active": true
+    },
+    {
+      "user_id": "u2",
+      "username": "b",
+      "is_active": true
+    },
+    {
+      "user_id": "u3",
+      "username": "c",
+      "is_active": true
+    }
+  ]
+}
+
+### Установить флаг активности юзеру
+POST http://localhost:8080/users/setIsActive
+content-type: application/json
+
+{
+  "user_id": "u2",
+  "is_active": true
+}
+
+### Получить назначенные пользователю PRы для ревью
+GET http://localhost:8080/users/getReview?user_id=u3
+
+### Создать PR и назначить ревьеров
+POST http://localhost:8080/pullRequest/create
+content-type: application/json
+
+{
+  "pull_request_id": "pr-1003",
+  "pull_request_name": "Add more bugs",
+  "author_id": "u1"
+}
+
+### Закрыть PR (идемпотентная операция)
+POST http://localhost:8080/pullRequest/merge
+content-type: application/json
+
+{
+  "pull_request_id": "pr-1001"
+}
+
+### Переназначить ревьювера
+POST http://localhost:8080/pullRequest/reassign
+content-type: application/json
+
+{
+  "pull_request_id": "pr-1003",
+  "old_reviewer_id": "u3"
+}
